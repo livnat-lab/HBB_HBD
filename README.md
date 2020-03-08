@@ -1,4 +1,7 @@
 
+### BC sorting SLURM grid version
+(https://slurm.schedmd.com/overview.html)
+
 #### instalations:
 
 #### install miniconda (https://docs.conda.io/en/latest/miniconda.html)
