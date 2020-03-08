@@ -1,8 +1,8 @@
 
-### BC sorting SLURM grid version
+## BC sorting, SLURM version
 (https://slurm.schedmd.com/overview.html)
 
-#### instalations:
+## instalation instuctions:
 
 #### install miniconda (https://docs.conda.io/en/latest/miniconda.html)
 #### install bioconda (https://bioconda.github.io)
@@ -20,6 +20,8 @@ biopython 1.73
 trimmomatic 0.39
 perl 5.26.2
 seqtk 1.3
+
+## Run instructions 
 
 cd path/to/project/scripts
 
