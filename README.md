@@ -37,7 +37,7 @@ srun bash more_scripts/samples_table_0.sh.concat.sh
 
 #### then check the concatenated output files
 
-#### 2) 
+#### 2) files setting
 #### prepare:
 #### design/params_1.sh
 #### design/samples_table.txt
@@ -87,12 +87,12 @@ bash create_dummy_genome5.sh 1
 
 #### after this stage, all files for IGV are ready (visual inspection of the alignments) in the 'mapping' directory: *.bam, *.bam.bai, *.barcode.fasta
 
-#### 8)
+#### 8) detection of potential mutations
 bash sam_to_mutation-table_5.0.sh 1
 #### outputs are directories tables.BC3cutoff1 and tables.BC3cutoff2, with  mutationFrequncyPerBarcode.txt 
 #### tables.BC3cutoff1 uses all tail barcodes for 3'BC the criterion and tables.BC3cutoff2 uses only tail barcodes that appear more than once in a family for the 3'BC criterion)
 
-#### 9)
+#### 9) detection of consensus mutations
 #### $i in 1...2
 bash consensus_15.sh $i
 
