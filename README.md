@@ -1,14 +1,19 @@
 
-## BC sorting, SLURM version
+# MEMDS output sorting, SLURM version
+
+The pipeline is designed to run on distributed computing systems (clusters) managed by SLURM
 (https://slurm.schedmd.com/overview.html)
 
-## instalation instuctions:
+## Prerequisite programs:
+The pipeline requires Conda package managment program to run
 
-#### install miniconda (https://docs.conda.io/en/latest/miniconda.html)
-#### install bioconda (https://bioconda.github.io)
-#### then:
-conda create -n modules3  python=2.7  bwa cutadapt fastqc pear perl picard pysam biopython samtools seqtk multiqc trimmomatic
+#### Install miniconda: (https://docs.conda.io/en/latest/miniconda.html)
+#### Install bioconda: (https://bioconda.github.io)
 
+#### Use Conda to create environment with the following programs:
+conda create -n modules3  python=2.7  bwa cutadapt fastqc pear perl picard pysam biopython samtools seqtk trimmomatic
+
+#### Check that all the programs are present in the newly created environment:
 bwa  0.7.17
 samtools 1.9
 cutadapt 1.18
@@ -21,66 +26,59 @@ trimmomatic 0.39
 perl 5.26.2
 seqtk 1.3
 
-## Run instructions 
+## Pipeline usage:
 
+#### a) Navigate to the folder containing pipeline scripts: 
 cd path/to/project/scripts
+#### b) Prepare the parameter files needed to run the pipeline, as outlined in the guide **"Parameter_file_preparation.pdf"**
+-------
+#### 1) Joining partial \*.fastq files (if data is separated across several lanes):
+a) **Prepare:** more_scripts/samples_table_0.txt\
+b) **Run:** *bash concatenate_partfiles.sh*\
+c) **Check output file:** "more_scripts/samples_table_0.sh.concat.sh"; make sure it doesn't include comments indicating errors\
+d) **Run**: *srun bash more_scripts/samples_table_0.sh.concat.sh*\
+e) **Check the concatenated output files**\
 
-#### 1) join fastq partfiles, if needed
-#### prepare:
-#### more_scripts/samples_table_0.txt
+#### 2) Organizing parameter files:
+a) **Prepare in the "scripts/design" folder**: params_1.sh; samples_table.txt; factors_table.txt\
+b) In the **sequences directory** (as listed in **params_1.sh**), prepare reference fasta files. Each reference file should contain single reference sequence. All reference files should have the extension **.fa**.\
+c) **Run**: \
+   *bash setting_1-PE.sh* (Paired-end data) **or**\
+   *bash setting_1-SE.sh* (Single-end data)\
+d) **Check**: output file **design/samples_table.sh**. Make sure it contains all parameter data and doesn't include comments indicating errors.\
 
-bash concatenate_partfiles.sh
+#### 3) Quality control and merging (for paired-end data):\
+a) **Run**: \
+    *bash filter-PE4.sh $i* ($i in 1...5 (5 is optional)) for paired-end data **or**\
+    *bash filter-SE4.sh $i* ($i in 1...4 (4 is optional)) for single-end data.\
+   **Note**: All steps are running on Slurm. The steps should be run in a sequential manner; **don't start** a new step before completion of the previous one!\
+b) In each step check that the jobs are completed on the grid using **"sacct"** command.\
+c) **Check** the output at each step:\
+   **step1:** Check Fastqc \*.html output for quality analysis of the raw data.\
+   **step2: For paired-end data only.** Check Pear results (merged fastq files). Check **\*.assembled.info** file for the percentage of reads that were merged.\
+   **step3:** Check quality-filtered fastq files - Cutadapt and Trimmomatic output and log files (Each filtered fastq can be viewed with the tool "less" in linux).\
+   **step4:** Check Fastqc \*.html output for quality analysis of the filtered data.\
+   **step5: Optional.** Check subsampled reads' data for "sanity checks" in **tests** directory.
 
-#### then check output file: "more_scripts/samples_table_0.sh.concat.sh", make sure it doesn't include comments indicating errors
+#### 4) Separating barcode sequences and gene sequence:
+a) **Run:** *bash trim7.sh  1*\
+b) **Check** that the jobs are completed on the grid using **"sacct"** command.\
+c) **Check** in the **filtered** directory, trimming information files: **\*.trimmed.barcodes** files (correctly trimmed), **\*.wrongId.barcodes** files (unexpected identifiers), and **\*.trimmed.log** files (stating percentage of reads with correct identifiers).\ 
+   Make sure that correct barcode sequences are recognized by the script and that most reads in the data contain correct barcodes!\ 
 
-srun bash more_scripts/samples_table_0.sh.concat.sh
+#### 5) Sorting paralogous genes based on unique sequence signature
+a) **Run:** *bash sort2.sh 1*\
+b) **Check** that the jobs are completed on the grid using **"sacct"** command.\
+c) **Check** sorted fastq files in the **"sorted"** directory.\ 
+   The **\*.withIndels.log** files contain all the correctly matched reads with a shift in the frame.\ 
+   The **\*.others.fastq** files contain reads tha couldn't be matched to either reference sequence.
 
-#### then check the concatenated output files
-
-#### 2) files setting
-#### prepare:
-#### design/params_1.sh
-#### design/samples_table.txt
-#### design/factors_table.txt
-#### in the sequences directory, prepare reference fasta files, with the extension *.fa
-bash setting_1-PE.sh
-#### or:
-bash setting_1-SE.sh
-
-#### then check output file design/samples_table.sh, make sure it doesn't include comments indicating errors
-
-#### 3) merge and quality filter
-
-#### for paired-end data:
-#### $i in 1...5 (5 is optional). All steps are running on Slurm.
-bash filter-PE4.sh $i
-
-#### or for single end data:
-#### $i in 1...4 (4 is optional). All steps are running on Slurm.
-bash filter-SE4.sh $i
-
-#### in this and all following steps: check the jobs are completed on the grid using "sacct"
-#### then check the quality and read-count results of the raw and filtered/assembled *.fastq files, for example in the Fastqc output HTML files, in "filtered" directory.
-#### step1 : check  also fastqc *.html graphs for raw fastq
-#### step2 : check Pear results (merged fastq files, look at assembled.info)
-#### step3 : check quality-filtered fastq files (cutadapt + trimmomatic output and log files. Each filtered fastq can be viewed with the tool "less" in linux)
-#### step4: check  also fastqc *.html graphs for filtered fastq
-#### step5: check subsampled reads data for "sanity checks" in tests directory
-
-#### 4) Select the region of interest
-bash trim7.sh  1
-
-#### then check, in filtered directory, trimming quality information files *.trimmed.barcodes files (correctly trimmed), *.wrongId.barcodes files (unexpected identifiers), and *.trimmed.log files.
-#### if needed, further test the result fastq files.
-
-#### 5) Sorting of paralogous genes based on unique sequence signature
-bash sort2.sh 1
-#### check "sorted" directory. The indels files contain all the correctly matched reads with a shift in the frame.
-
-#### 6) Reads mapping
-#### Creates sorted.bam files with the read-reference alighnment (to be used by the pipline and IGV), and sorted.bam.bai files (to be used by IGV) 
-#### $i in 1...2
-bash bwa9.sh  $i
+#### 6) Mapping filtered, trimmed and sorted reads to reference:
+a) **Run:** *bash bwa9.sh 1*\
+b) **Check** that dictionary files are generated for each **\*.fa** file in the **reference sequence directory**\
+c) **Run:** *bash bwa9.sh 2*\
+d) **Check** that the jobs are completed on the grid using **"sacct"** command.\
+e) **Check** that read-reference alignment files (**\*.sam** and **\*.bam**) are created in the **mapping** directory for each sorted fastq file.
 
 #### 7) Adjust data format so the mapping results can be viewed with IGV viewer.
 bash create_dummy_genome5.sh 1
