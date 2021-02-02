@@ -1,5 +1,5 @@
 
-# MEMDS output sorting, SLURM version
+# MEMDS output analysis, SLURM version
 
 The pipeline is designed to run on distributed computing systems (clusters) managed by SLURM
 (https://slurm.schedmd.com/overview.html)
