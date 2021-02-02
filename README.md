@@ -29,7 +29,7 @@ seqtk 1.3
 ## Pipeline usage:
 #### Pre-run:
 #### a) Prepare the parameter files needed to run the pipeline, as outlined in the guide **"Parameter_file_preparation.pdf"**.
-#### b) Navigate to the folder containing pipeline scripts: *cd path/to/project/scripts*. The pipeline is designed to run only from inside "scripts" folder.
+#### b) Navigate to the folder containing pipeline scripts: *cd path/to/project/scripts*. The pipeline is designed to run only from inside the "scripts" folder.
 -------
 #### 1) Joining partial \*.fastq files (if data is separated across several lanes):
 a) **Prepare:** more_scripts/samples_table_0.txt\
