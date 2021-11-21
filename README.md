@@ -5,7 +5,7 @@ The pipeline is designed to run on distributed computing systems (clusters) mana
 (https://slurm.schedmd.com/overview.html)
 
 ## Prerequisite programs:
-The pipeline requires Conda package manager to run.
+The pipeline makes use of several external programs. The easiest way to make sure that all dependencies are installed is to use Conda package manager. Alternatively, one can install manually the programs listed below, however in this case program locations need to be added to the $PATH prior to running the pipeline
 
 #### Install miniconda: https://docs.conda.io/en/latest/miniconda.html
 #### Install bioconda: https://bioconda.github.io
