@@ -1,8 +1,10 @@
+# A wrapper scripts to run BWA alignment jobs
 
 params_1="$PWD/design/params_1.sh"
 params_2="$PWD/design/samples_table.sh"
 
 #####################################
+# Gather pipeline parameter data and check that all relevant parameters are non-empty strings
 
 function assert_ { rc=$?; if [[ $rc != 0 ]]; then echo 'exit !!!!'; exit $rc; fi }
 
@@ -15,9 +17,13 @@ if [ ! -d "$params_dir_out_1" ] || [ ! -d "$params_dir_out_1/filtered" ] || [ ! 
     [ ! -n "${params_dir_reference+1}" ] || [ ! -n "${sort_refs+1}" ] || [ ! -n "${sort_ref+1}" ] || [ ! -n "${reference_size+1}" ]; then
     exit "error: not all parameters/files exit"
 fi
+
+#########
+# Create dictionary files from reference sequences and run sequence alignment jobs
+
 if [ ! -d "$params_dir_out_1/mapping" ]; then mkdir "$params_dir_out_1/mapping"; assert_; fi
 
-if [ $1 -eq 10 ] || [ $1 -eq 1 ]; then
+if [ $1 -eq 1 ]; then
     # for ref1 in  $(echo "${reference[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '); do # unique (non-redundant) names only
     for ref1 in "$params_dir_reference/"*.fa; do
         echo $ref1
@@ -34,7 +40,7 @@ if [ $1 -eq 10 ] || [ $1 -eq 1 ]; then
         fi
     done
 fi
-if [ $1 -eq 20 ] || [ $1 -eq 2 ]; then
+if [ $1 -eq 2 ]; then
 	for i in ${!title[@]}; do
         title1="${title[i]}"_"idx$i"; assert_
         prefix1="$params_dir_out_1/sorted/$title1";
