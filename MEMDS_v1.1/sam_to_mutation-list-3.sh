@@ -76,12 +76,12 @@ for i in ${!title[@]}; do
 					--out_dir=\"$outdir\" \\
 					--ref_fasta=\"$ref1\" \\
 					--limit_start=\"$limit_start\" \\
-				        --limit_end=\"$limit_end\" \\
+				    --limit_end=\"$limit_end\" \\
 					--queryAlnMustStartAt0=1 \\
-				        --include_BX_tag=\"$sam_BX_tag\" \\
-				        --BC3_min_cutoff=\"$BC3_min_cutoff\" \\
+				    --include_BX_tag=\"$sam_BX_tag\" \\
+				    --BC3_min_cutoff=\"$BC3_min_cutoff\" \\
 					--checkMut_name=\"$seq_mut\" \\
-				        --checkMut_pos=\"$seq_pos\" \\
+				    --checkMut_pos=\"$seq_pos\" \\
 					--checkMut_action=\"$seq_action\"
 					"
                        assert_
