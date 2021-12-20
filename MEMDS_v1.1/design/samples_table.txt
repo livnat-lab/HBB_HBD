@@ -1,9 +1,9 @@
 pair	sample	file
 
-1	exp2155	/data/home/run15_1and2/raw_concatenated/exp2155_f.fastq.gz
-1	exp2155	/data/home/run15_1and2/raw_concatenated/exp2155_r.fastq.gz
+1	Exp	/data/home/run15_1and2/raw_concatenated/exp2155_f.fastq.gz
+1	Exp	/data/home/run15_1and2/raw_concatenated/exp2155_r.fastq.gz
 
-1	cont2155	/data/home/run15_1and2/raw_concatenated/cont2155_f.fastq.gz
-1	cont2155	/data/home/run15_1and2/raw_concatenated/cont2155_r.fastq.gz
+1	Cont	/data/home/run15_1and2/raw_concatenated/cont2155_f.fastq.gz
+1	Cont	/data/home/run15_1and2/raw_concatenated/cont2155_r.fastq.gz
 
 
