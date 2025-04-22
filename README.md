@@ -4,6 +4,8 @@
 The pipeline is designed to run on distributed computing systems (clusters) managed by SLURM
 (https://slurm.schedmd.com/overview.html)
 
+The version presented here is an older version used in the analysis of the original HbS data (see Melamed, D., Nov, Y., Malik, A., Yakass, M. B., Bolotin, E., Shemer, R., Hiadzi, E. K., Skorecki, K. L., & Livnat, A. (2022). De novo mutation rates at the single-mutation resolution in a human HBB gene region associated with adaptation and genetic disease. Genome research, 32(3), 488–498. https://doi.org/10.1101/gr.276103.121).
+
 ## Prerequisite programs:
 The pipeline makes use of several external programs. The easiest way to make sure that all dependencies are installed is to use Conda package manager. Alternatively, one can install manually the programs listed below, however in this case program locations need to be added to the $PATH prior to running the pipeline.
 
